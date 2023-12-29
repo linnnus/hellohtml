@@ -2,6 +2,7 @@ import { HandlerContext, router } from "https://deno.land/x/rutt@0.1.0/mod.ts";
 import { serve } from "https://deno.land/std@0.178.0/http/server.ts";
 
 interface Project {
+  name: string;
   content: string;
 }
 
@@ -16,7 +17,10 @@ function serveFile(path: string, init?: ResponseInit): () => Response {
 const DEFAULT_CONTENT = Deno.readTextFileSync("default.html");
 async function handleNew(): Promise<Response> {
   const newId = crypto.randomUUID();
-  const project = { content: DEFAULT_CONTENT };
+  const project = {
+    name: "my projecttt ^v^ uwu",
+    content: DEFAULT_CONTENT,
+  };
   await kv.set(["projects", newId], project);
   return new Response(null, {
     status: 302,
@@ -41,6 +45,7 @@ async function handleEdit(
 
   const pageContent = EDIT_HTML
     .replaceAll("{{ID}}", id)
+    .replaceAll("{{name}}", project.name)
     .replaceAll("{{content}}", project.content);
   return new Response(pageContent, {
     headers: {
@@ -82,9 +87,9 @@ async function handleUpdate(
     });
   }
 
-  const newContent = await req.text();
-  project.content = newContent;
-  await kv.set(["projects", id], project);
+  // UNSAFE: Clients can store whatever they want.
+  const newProject = await req.json() as Project;
+  await kv.set(["projects", id], newProject);
 
   return new Response(null, { status: 204, statusText: "Updated database" });
 }

@@ -1,20 +1,22 @@
 // UPLOAD INPUT ----------------------------------------------------------------
 
 const inputArea = document.getElementById("input");
+const nameInput = document.getElementById("name");
 
-async function updateContent() {
-  console.debug("Sending updated input...");
+async function update() {
+  console.debug("Sending updated info...");
   const response = await fetch(`/update/${window.helloHtmlProjectId}`, {
     method: "POST",
     headers: { "Content-Type": "text/plain" },
-    body: inputArea.value,
+    body: JSON.stringify({
+	    name: nameInput.value,
+	    content: inputArea.value,
+    }),
   });
   if (!response.ok) {
-    alert(
-      `Failed to update contents on server: ${response.statusText}. See dev console for more info.`,
-    );
+    alert(`Failed to update contents on server: ${response.statusText}. See dev console for more info.`);
   } else {
-	  console.debug("Finished updating input");
+	  console.debug("Finished updating info");
   }
 }
 
@@ -28,7 +30,8 @@ function debounce(fn, delay) {
   };
 }
 
-inputArea.addEventListener("input", debounce(updateContent, 2000));
+inputArea.addEventListener("input", debounce(update, 2000));
+nameInput.addEventListener("change", update);
 
 // SMART INPUT -----------------------------------------------------------------
 
