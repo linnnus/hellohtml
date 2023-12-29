@@ -38,7 +38,7 @@ async function handleEdit(
   _ctx: HandlerContext,
   { id }: Record<"id", string>,
 ): Promise<Response> {
-  const { value: project } = await kv.get(["projects", id]);
+  const { value: project } = await kv.get<Project>(["projects", id]);
   if (project === null) {
     return new Response(`project with id ${id} not found`, { status: 404 });
   }
@@ -133,8 +133,9 @@ const handler = router({
   "/listen/:id": handleListen,
 });
 
-const port = 8080;
+const port = 8538;
 console.log(`HTTP server running. Access it at: http://0.0.0.0:${port}/`);
-await serve(handler, { port });
+// @ts-ignore fuck det her
+Deno.serve({ port }, handler);
 
 // vi: ft=typescript et ts=2 sw=2
