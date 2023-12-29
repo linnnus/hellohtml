@@ -6,7 +6,7 @@ interface Project {
   content: string;
 }
 
-const kv = await Deno.openKv();
+const kv = await Deno.openKv("hello.db");
 
 function serveFile(path: string, init?: ResponseInit): () => Response {
   const contents = Deno.readFileSync(path);
