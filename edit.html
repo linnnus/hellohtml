@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width,initial-scale=1" />
+		<script>window.helloHtmlProjectId = "{{ID}}"</script>
+		<script defer src="/edit.js"></script>
+		<style>
+			body, html {
+				margin: 0;
+				padding: 0;
+				box-sizing: border-box;
+			}
+
+			body {
+				width: 100vw;
+				height: 100vh;
+				display: flex;
+			}
+
+			#input, #output {
+				width: 50%;
+			}
+
+			#input {
+				resize: none;
+				padding: 1em;
+				white-space: nowrap;
+			}
+		</style>
+	</head>
+	<body>
+		<textarea spellcheck="false" id="input">{{content}}</textarea>
+		<iframe id="output" src="/view/{{ID}}" allow="accelerometer; camera; encrypted-media; display-capture; geolocation; gyroscope; microphone; midi; clipboard-read; clipboard-write; web-share" allowfullscreen="true" allowpaymentrequest="true" allowtransparency="true" sandbox="allow-forms allow-modals allow-pointer-lock allow-popups allow-same-origin allow-scripts allow-top-navigation-by-user-activation allow-downloads allow-presentation" class="result-iframe iframe-visual-update" name="Output window" loading="lazy"></iframe>
+	</body>
+</html>
