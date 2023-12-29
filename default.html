@@ -4,6 +4,10 @@
 		<meta charset="UTF-8" />
 		<meta name="viewport" content="width=device-width,initial-scale=1" />
 		<style>
+			h1 {
+				font-family: fantasy;
+			}
+
 			.rainbow {
 				background-image: linear-gradient(to left, violet, indigo, blue, green, yellow, orange, red);
 				-webkit-background-clip: text;
@@ -11,8 +15,25 @@
 				font-size: large;
 			}
 		</style>
+		<script async>
+			let size = 12;
+			function obnoxious() {
+				const p = document.createElement("P");
+				p.textContent = "Check the console for a secret message :))))";
+				p.style.fontSize = size + "px";
+				size += 1;
+				console.log("yay you found it!!!");
+				document.body.appendChild(p);
+			}
+
+			setInterval(obnoxious, 1000);
+		</script>
 	</head>
 	<body>
-		<p class="rainbow">Hello, World!</p>
+		<h1>Welcome to my webpage!!1!!111</h1>
+		<p class="rainbow">go on! make something cool</p>
+		<p>here is a cat</p>
+		<img src="https://placekitten.com/500/500" width="500" height="500">
 	</body>
 </html>
+
