@@ -1,16 +1,9 @@
 {
   description = "Shitty codepen clone";
 
-  inputs = {
-    nixpkgs.url = "nixpkgs/nixos-unstable";
-    flake-utils.url = "github:numtide/flake-utils";
-    deno2nix = {
-      url = "github:SnO2WMaN/deno2nix";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-  };
+  inputs.deno2nix.url = "github:SnO2WMaN/deno2nix";
 
-  outputs = { self, nixpkgs, deno2nix, ... }:
+  outputs = { deno2nix, ... }:
     {
       # FIXME: It is wasteful to always run the service. We should run on-demand instead.
       #        This is usually achieved using SystemD sockets [4] but we are blocked on missing
@@ -68,7 +61,9 @@
 
                 serviceConfig =
                   let
-                    pkgs' = pkgs.extend deno2nix.overlays.default;
+                    # HACK: Use unstable pkgs if they are available.
+                    #       This is specific to my personal nix config and does not belong here!!
+                    pkgs' = (pkgs.unstable or pkgs).extend deno2nix.overlays.default;
 
                     additionalDenoFlags = "--unstable-kv"; # Enable unstable key-value store.
                     src = ./.;
