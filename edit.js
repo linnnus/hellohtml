@@ -89,9 +89,12 @@ inputArea.addEventListener("keydown", (event) => {
   } else if (event.key == "Enter") { // Copy indentation on newline
     if (t.selectionStart === t.selectionEnd) { // no visual selection
       event.preventDefault(); // don't insert linebreak - we will do that
-      const lines = t.value.split("\n");
-      const currentLine = lines[t.value.slice(0, t.selectionEnd).split("\n").length - 1];
+
+      // Get whitespace *before* cursor.
+      const lines = t.value.slice(0, t.selectionStart).split("\n");
+      const currentLine = lines[lines.length - 1];
       const indent = currentLine.match(/^\s*/)[0];
+
       document.execCommand("insertText", false, "\n" + indent);
     }
   }
@@ -105,3 +108,5 @@ eventSource.addEventListener("message", (_) => {
   console.debug("hellohtml: Content has changed on server. Reloading iframe.");
   outputFrame.contentWindow.location.reload();
 });
+
+// vi: ft=javascript et ts=2 sw=2
