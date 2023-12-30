@@ -1,20 +1,26 @@
 import { HandlerContext, router } from "https://deno.land/x/rutt@0.1.0/mod.ts";
 import { serve } from "https://deno.land/std@0.178.0/http/server.ts";
+import { join } from "https://deno.land/std@0.210.0/path/mod.ts";
+
+// Configuration (may optionally be specificed by command line).
+const dbPath = Deno.env.get("HELLOHTML_DB_PATH") ?? "./hello.db";
+const portS = Deno.env.get("HELLOHTML_PORT") ?? "8538";
+const staticPath = Deno.env.get("HELLOHTML_STATIC_PATH") ?? ".";
 
 interface Project {
   name: string;
   content: string;
 }
 
-const kv = await Deno.openKv("hello.db");
+const kv = await Deno.openKv(dbPath);
 
 function serveFile(path: string, init?: ResponseInit): () => Response {
-  const contents = Deno.readFileSync(path);
+  const contents = Deno.readFileSync(join(staticPath, path));
   return () => new Response(contents, init);
 }
 
 // This endpoint creates a new project and redirects the client to the edit page.
-const DEFAULT_CONTENT = Deno.readTextFileSync("default.html");
+const DEFAULT_CONTENT = Deno.readTextFileSync(join(staticPath, "default.html"));
 async function handleNew(): Promise<Response> {
   const newId = crypto.randomUUID();
   const project = {
@@ -32,7 +38,7 @@ async function handleNew(): Promise<Response> {
 
 // This endpoint presents the client with a ui to interact with the given project.
 // The client-side JavaScript is populated with some data in a rather hacky way...
-const EDIT_HTML = Deno.readTextFileSync("edit.html");
+const EDIT_HTML = Deno.readTextFileSync(join(staticPath, "edit.html"));
 async function handleEdit(
   _req: Request,
   _ctx: HandlerContext,
@@ -133,9 +139,8 @@ const handler = router({
   "/listen/:id": handleListen,
 });
 
-const port = 8538;
-console.log(`HTTP server running. Access it at: http://0.0.0.0:${port}/`);
-// @ts-ignore fuck det her
-Deno.serve({ port }, handler);
+console.log(`HTTP server running. Access it at: http://0.0.0.0:${portS}/`);
+// @ts-ignore Slight incompatibility between Rutt and `Deno.serve` is negligible.
+Deno.serve({ port: parseInt(portS) }, handler);
 
 // vi: ft=typescript et ts=2 sw=2
