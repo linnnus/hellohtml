@@ -3,21 +3,16 @@
 const inputArea = document.getElementById("input");
 const nameInput = document.getElementById("name");
 
-async function update() {
-  console.debug("Sending updated info...");
-  const response = await fetch(`/update/${window.helloHtmlProjectId}`, {
-    method: "POST",
-    headers: { "Content-Type": "text/plain" },
-    body: JSON.stringify({
-	    name: nameInput.value,
-	    content: inputArea.value,
-    }),
-  });
-  if (!response.ok) {
-    alert(`Failed to update contents on server: ${response.statusText}. See dev console for more info.`);
-  } else {
-	  console.debug("Finished updating info");
-  }
+async function handleInputChange() {
+    const response = await fetch(`/project/${window.helloHtmlProjectId}/set-content`, {
+      method: "PATCH",
+      headers: { "Content-Type": "text/plain" },
+      body: inputArea.value,
+    });
+    if (!response.ok) {
+      alert(`Failed to send updated content to server: ${response.statusText}. See dev console for more info.`);
+      return;
+    }
 }
 
 function debounce(fn, delay) {
@@ -30,8 +25,23 @@ function debounce(fn, delay) {
   };
 }
 
-inputArea.addEventListener("input", debounce(update, 2000));
-nameInput.addEventListener("change", update);
+inputArea.addEventListener("input", debounce(handleInputChange, 2000));
+
+async function handleNameChange() {
+    const response = await fetch(`/project/${window.helloHtmlProjectId}/set-name`, {
+      method: "PATCH",
+      headers: { "Content-Type": "text/plain" },
+      body: nameInput.value,
+    });
+    if (!response.ok) {
+      alert(`Failed to send updated name to server: ${response.statusText}. See dev console for more info.`);
+      return;
+    }
+
+  document.title = nameInput.value;
+}
+
+nameInput.addEventListener("change", handleNameChange);
 
 // SMART INPUT -----------------------------------------------------------------
 
@@ -103,9 +113,9 @@ inputArea.addEventListener("keydown", (event) => {
 // OUTPUT ----------------------------------------------------------------------
 
 const outputFrame = document.getElementById("output");
-const eventSource = new EventSource(`/listen/${window.helloHtmlProjectId}`);
-eventSource.addEventListener("message", (_) => {
-  console.debug("hellohtml: Content has changed on server. Reloading iframe.");
+const eventSource = new EventSource(`/project/${window.helloHtmlProjectId}/event-stream`);
+eventSource.addEventListener("message", _ => {
+  console.log("%cRefreshing...", "font-size: x-large");
   outputFrame.contentWindow.location.reload();
 });
 
