@@ -72,7 +72,7 @@
                     hellohtml-bundle-drv = pkgs'.deno2nix.mkBundled {
                       pname = "hellohtml-bundle";
                       version = "0.1.0";
-                      entrypoint = "./server.ts";
+                      entrypoint = "./src/server.ts";
                       lockfile = "./lock.json";
                       inherit src additionalDenoFlags;
                     };
