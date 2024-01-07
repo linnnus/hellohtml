@@ -63,6 +63,7 @@
                   let
                     # HACK: Use unstable pkgs if they are available.
                     #       This is specific to my personal nix config and does not belong here!!
+                    #       Can be removed once stable packages has deno >= 1.38.5
                     pkgs' = (pkgs.unstable or pkgs).extend deno2nix.overlays.default;
 
                     additionalDenoFlags = "--unstable-kv"; # Enable unstable key-value store.
@@ -79,10 +80,10 @@
                     hellohtml-drv = pkgs'.writeShellScript "hellohtml" ''
                       export HELLOHTML_DB_PATH="${config.users.users.hellohtml.home}"/hello.db
                       export HELLOHTML_PORT=${toString cfg.port}
-                      export HELLOHTML_STATIC_PATH="${src}"
+                      export HELLOHTML_BASE_DIR="${src}"
 
                       ${pkgs'.deno}/bin/deno run \
-                        --allow-read=$HELLOHTML_STATIC_PATH,$HELLOHTML_DB_PATH \
+                        --allow-read=$HELLOHTML_BASE_DIR,$HELLOHTML_DB_PATH \
                         --allow-write=$HELLOHTML_DB_PATH \
                         --allow-net=0.0.0.0:$HELLOHTML_PORT \
                         --allow-env \
