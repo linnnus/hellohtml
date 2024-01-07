@@ -73,7 +73,8 @@
                       pname = "hellohtml-bundle";
                       version = "0.1.0";
                       entrypoint = "./src/server.ts";
-                      lockfile = "./lock.json";
+                      lockfile = "./deno.lock";
+                      config = "./deno.json";
                       inherit src additionalDenoFlags;
                     };
 
