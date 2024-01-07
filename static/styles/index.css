@@ -1,7 +1,50 @@
-form {
+/* general */
+
+body {
+	background-image: url(/static/images/paper.jpeg);
+}
+
+main {
+	margin: 3rem;
+}
+
+.center {
 	display: flex;
 	justify-content: center;
 }
+
+h1 {
+	font-family: Arial, sans-serif;
+	color: #2F5485;
+	text-shadow: 0.07em 0.07em 0 #b3b3b3;
+	transform: scale(1, 1.5);  /* stretch */
+}
+
+/* rainbow text */
+
+.rainbow-word {
+	font-weight: bold;
+}
+
+.rainbow-letter:nth-child(1) { animation-delay: calc(-2s / 5 * 1); color: red; }
+.rainbow-letter:nth-child(2) { animation-delay: calc(-2s / 5 * 2); color: orange; }
+.rainbow-letter:nth-child(3) { animation-delay: calc(-2s / 5 * 3); color: #c7c71e; }
+.rainbow-letter:nth-child(4) { animation-delay: calc(-2s / 5 * 4); color: green; }
+.rainbow-letter:nth-child(5) { animation-delay: calc(-2s / 5 * 5); color: blue; }
+
+@media not (prefers-reduced-motion) {
+	.rainbow-letter {
+		display: inline-block; /* necesary for transform */
+		animation: bounce 2s ease-in-out infinite alternate;
+	}
+
+	@keyframes bounce {
+		0% { transform: translateY(0); }
+		50% { transform: translateY(-0.5em); }
+	}
+}
+
+/* button stuff */
 
 .button {
 	display: inline-block;

@@ -6,12 +6,22 @@
 
 {% block body %}
 <main>
-	<h1>welcome to hellohtml&trade;</h1>
-	<p>this is kind of like codepen but <span class="rainbow">worse</span>.</p>
-	<p>click below  to create a new project!!1!</p>
-	<form action="/project/new" method="POST">
+	<h1 class="center">welcome to HelloHTML&trade;</h1>
+	<p>this is kind of like codepen but
+	<span class="rainbow-word">
+		<span class="rainbow-letter">w</span>
+		<span class="rainbow-letter">o</span>
+		<span class="rainbow-letter">r</span>
+		<span class="rainbow-letter">s</span>
+		<span class="rainbow-letter">e</span>
+	</span>. i made this because i don't particularly like codepen; the layout's cramped and there are too many knobs and switches. this project is a codepen clone which is basically just a textarea and an iframe. it ain't much but it's <del>honest work</del> just the right balance of capability/simplicity for me.</p>
+	<p>click below  to create a new project!!1! the project will be tied to this specific browser</p>
+	<form class="center" action="/project/new" method="POST">
 		<button class="button yellow">Create new project</button>
 	</form>
-	<p>you can view all of your existing projects by clicking <a class="button blue" href="/projects.html">this button</a> right here.</p>
+	<p>you can view all of your existing projects by clicking the button below. your projects are tied to a special cookie. it acts as a combined username/password, sort of like an API key or a permanent session-token. if you're tech-savy, you can share this cookie between your different browsers. otherwise just make sure not to give it to anyone you wouldn't trust with your password</p>
+	<div class="center">
+		<a class="button blue" href="/projects.html">view projects</a>
+	</div>
 </main>
 {% endblock %}
