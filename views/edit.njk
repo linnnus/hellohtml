@@ -1,0 +1,22 @@
+{% extends layout %}
+
+{% block head %}
+<link rel="stylesheet" href="/static/styles/edit.css">
+<link rel="preload" href="/static/images/kitten-50.jpeg" as="image">
+{% endblock %}
+
+{% block scripts %}
+<script>window.helloHtmlProjectId = "{{project.id}}"</script>
+<script src="/static/scripts/edit.js"></script>
+{% endblock %}
+
+{% block body %}
+<header>
+	<input type="text" value="{{project.name}}" id="name" />
+	{%if readonly %}
+		<span>Read-only mode</span>
+	{% endif %}
+</header>
+<textarea spellcheck="false" id="input">{{project.content}}</textarea>
+<iframe id="output" src="/project/{{project.id}}/view.html" allow="accelerometer; camera; encrypted-media; display-capture; geolocation; gyroscope; microphone; midi; clipboard-read; clipboard-write; web-share" allowfullscreen="true" allowpaymentrequest="true" allowtransparency="true" sandbox="allow-forms allow-modals allow-pointer-lock allow-popups allow-same-origin allow-scripts allow-top-navigation-by-user-activation allow-downloads allow-presentation" class="result-iframe iframe-visual-update" name="Output window" loading="lazy"></iframe>
+{% endblock %}

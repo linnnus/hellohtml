@@ -1,0 +1,17 @@
+{% extends layout %}
+
+{% block head %}
+<link rel="stylesheet" href="/static/styles/index.css">
+{% endblock %}
+
+{% block body %}
+<main>
+	<h1>welcome to hellohtml&trade;</h1>
+	<p>this is kind of like codepen but <span class="rainbow">worse</span>.</p>
+	<p>click below  to create a new project!!1!</p>
+	<form action="/project/new" method="POST">
+		<button class="button yellow">Create new project</button>
+	</form>
+	<p>you can view all of your existing projects by clicking <a class="button blue" href="/projects.html">this button</a> right here.</p>
+</main>
+{% endblock %}

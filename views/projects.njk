@@ -1,0 +1,14 @@
+{% extends layout %}
+
+{% block body %}
+<main>
+	<h1>projects</h1>
+	<p>here are your projects.</p>
+	<p>you have {{projects.length}} projects</p>
+	<ul>
+		{% for project in projects %}
+			<li><a href="/project/{{project.id}}/edit.html">{{project.name}}</a></li>
+		{% endfor %}
+	</ul>
+</main>
+{% endblock %}

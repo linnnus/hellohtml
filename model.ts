@@ -5,9 +5,9 @@
 // seamlessly on both Deno Deploy and my home-server.
 
 import { HTTPException } from "https://deno.land/x/hono@v3.11.12/http-exception.ts";
+import { dbPath } from "./config.ts";
 
-const dbUri = Deno.env.get("HELLOHTML_DB_URI") ?? "./hello.db";
-const kv = await Deno.openKv(dbUri);
+const kv = await Deno.openKv(dbPath);
 
 export interface Project {
 	name: string,

@@ -1,16 +1,12 @@
-/** @jsx jsx */
-/** @jsxFrag Fragment */
-
 /// <reference lib="deno.unstable" />
 
 import { Hono } from "https://deno.land/x/hono@v3.11.12/mod.ts";
-import { jsx, Fragment, jsxRenderer, serveStatic, raw } from "https://deno.land/x/hono@v3.11.12/middleware.ts";
 import { getCookie, setCookie } from "https://deno.land/x/hono@v3.11.12/helper/cookie/index.ts";
+import { serveStatic } from 'https://deno.land/x/hono@v3.11.12/middleware.ts'
+import { render, configure } from "npm:nunjucks";
+import { relative } from "https://deno.land/std@0.181.0/path/mod.ts";
 import { newProject, getProjectById, setProjectName, setProjectContent, watchProjectForChanges, getProjectsByUserId } from "./model.ts";
-
-// Configuration (may optionally be specificed by command line).
-const staticPath = Deno.env.get("HELLOHTML_STATIC_PATH") ?? "./static/";
-const port = parseInt(Deno.env.get("HELLOHTML_PORT") ?? "8538");
+import { viewPath, staticPath, port } from "./config.ts";
 
 const app = new Hono<{
 	Variables: {
@@ -18,21 +14,49 @@ const app = new Hono<{
 	},
 }>();
 
-// As a first step, try serving the static files.
-app.get("/*", serveStatic({ root: staticPath }));
+// Views are stored in `./views/`. They are Nunjuck templates which need to be
+// populated with data before they are rendered to HTML.
+//
+// Hono has support for custom renderers but it is slightly cumbersome. First,
+// we must declare the type of arguments supported by our renderer. The way to
+// do this is rather obscure, so I just copied what [0] was doing.
+//
+// Then we configure Nunjucks [1] to look in the correct repository.
+//
+// For each request we then set define a renderer which basically just passes
+// it's arguments directly to Nunjucks, while setting a few default properties.
+//
+// [0]: https://github.com/honojs/middleware/blob/0d7244b5bbcc0b628f5fe9f032c9542b74531b7d/packages/react-renderer/src/index.ts#L5-L9
+// [1]: https://mozilla.github.io/nunjucks
+declare module "https://deno.land/x/hono@v3.11.12/mod.ts" {
+	interface ContextRenderer {
+		(view: string, props?: {
+			layout?: string,
+			[prop: string]: unknown,
+		}): Promise<Response>
+	}
+}
+configure(viewPath, {
+	autoescape: true,
+	throwOnUndefined: true,
+	trimBlocks: true,
+	lstripBlocks: true,
+});
+app.use("*", async (c, next) => {
+	c.setRenderer(async (name, props) => {
+		const content = await render(name + ".njk", {
+			title: "HelloHTML",
+			...props,
+			layout: (props?.layout ?? "layout") + ".njk",
+		});
+		return c.html(content);
+	});
+	await next();
+});
 
-app.use("*", jsxRenderer(({ children, extraHead = [] }) => {
-	return (
-		<html>
-			<head>
-				<meta charset="UTF-8" />
-				<meta name="viewport" content="width=device-width,initial-scale=1" />
-				{extraHead}
-			</head>
-			<body>{children}</body>
-		</html>
-	);
-}));
+app.use("/", c => {
+	return c.render("index");
+});
 
 // Users are identified by a userId which acts sort of like an API token. That
 // is, a combined identifier and permission. The security/ease-of-use tradeoff
@@ -65,26 +89,12 @@ app.post("/project/new", async c => {
 app.get("/project/:id/edit.html", async c => {
 	const projectId = c.req.param("id");
 	const project = await getProjectById(projectId);
-
 	const userId = c.get("userId");
-	const body = <>
-		<header>
-			<input type="text" value={project.name} id="name" />
-			{(project.ownerId != userId)
-				? <span>Read-only mode</span>
-				: <></>}
-		</header>
-		<textarea spellcheck={false} id="input">{project.content}</textarea>
-		<iframe id="output" src={`/project/${project.id}/view.html`} allow="accelerometer; camera; encrypted-media; display-capture; geolocation; gyroscope; microphone; midi; clipboard-read; clipboard-write; web-share" allowfullscreen={true} allowpaymentrequest={true} allowtransparency={true} sandbox="allow-forms allow-modals allow-pointer-lock allow-popups allow-same-origin allow-scripts allow-top-navigation-by-user-activation allow-downloads allow-presentation" class="result-iframe iframe-visual-update" name="Output window" loading="lazy"></iframe>
-	</>;
-	return c.render(body, {
-		extraHead: <>
-			<title>{project.name}</title>
-			<link rel="stylesheet" href="/edit.css" />
-			{/* FIXME: bro BER om XSS */}
-			<script>{raw(`window.helloHtmlProjectId = "${projectId}"`)}</script>
-			<script async src="/edit.js" />
-		</>,
+	return c.render("edit", {
+		project,
+		userId,
+		title: project.name,
+		readonly: project.ownerId != userId,
 	});
 });
 
@@ -127,16 +137,16 @@ app.get("/project/:id/event-stream", c => {
 app.get("/projects.html", async c => {
 	const userId = c.get("userId");
 	const projects = await getProjectsByUserId(userId);
-	const body = <>
-		<h1>your pwojects uwu....</h1>
-		<p>here's a list of your projects and whatnot.</p>
-		<ul>
-			{projects.map(p => <li><a href={`/project/${p.id}/edit.html`}>{p.name}</a></li>)}
-		</ul>
-	</>;
-	return c.render(body, {
-		extraHead: <title>Your projects</title>,
+	return c.render("projects", {
+		title: "Projects",
+		userId,
+		projects,
 	});
 });
+
+app.use("/static/*", serveStatic({
+	root: relative(Deno.cwd(), staticPath),
+	rewriteRequestPath: p => p.slice("/static/".length),
+}));
 
 Deno.serve({ port }, app.fetch);
