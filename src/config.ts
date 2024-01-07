@@ -1,6 +1,6 @@
 import { join, fromFileUrl, dirname } from "https://deno.land/std@0.181.0/path/mod.ts";
 
-const base = Deno.env.get("HELLOHTML_BASE_DIR") ?? dirname(fromFileUrl(import.meta.url));
+const base = Deno.env.get("HELLOHTML_BASE_DIR") ?? dirname(dirname(fromFileUrl(import.meta.url)));
 
 // Path to the directory that contains all static assets.
 export const staticPath = Deno.env.get("HELLOHTML_STATIC_DIR") ?? join(base, "static");
