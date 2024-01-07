@@ -3,7 +3,7 @@
 import { Hono } from "https://deno.land/x/hono@v3.11.12/mod.ts";
 import { getCookie, setCookie } from "https://deno.land/x/hono@v3.11.12/helper/cookie/index.ts";
 import { serveStatic } from 'https://deno.land/x/hono@v3.11.12/middleware.ts'
-import { render, configure } from "https://esm.sh/v135/nunjucks@3.2.4/deno/nunjucks.mjs";
+import nunjucks from "https://deno.land/x/nunjucks@3.2.4/mod.js";
 import { relative } from "https://deno.land/std@0.181.0/path/mod.ts";
 import { newProject, getProjectById, setProjectName, setProjectContent, watchProjectForChanges, getProjectsByUserId } from "./model.ts";
 import { viewPath, staticPath, port } from "./config.ts";
@@ -33,18 +33,18 @@ declare module "https://deno.land/x/hono@v3.11.12/mod.ts" {
 		(view: string, props?: {
 			layout?: string,
 			[prop: string]: unknown,
-		}): Promise<Response>
+		}): Response | Promise<Response>
 	}
 }
-configure(viewPath, {
+nunjucks.configure(viewPath, {
 	autoescape: true,
 	throwOnUndefined: true,
 	trimBlocks: true,
 	lstripBlocks: true,
 });
 app.use("*", async (c, next) => {
-	c.setRenderer(async (name, props) => {
-		const content = await render(name + ".njk", {
+	c.setRenderer((name, props) => {
+		const content = nunjucks.render(name + ".njk", {
 			title: "HelloHTML",
 			...props,
 			layout: (props?.layout ?? "layout") + ".njk",
