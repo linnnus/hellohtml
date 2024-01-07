@@ -3,7 +3,7 @@
 import { Hono } from "https://deno.land/x/hono@v3.11.12/mod.ts";
 import { getCookie, setCookie } from "https://deno.land/x/hono@v3.11.12/helper/cookie/index.ts";
 import { serveStatic } from 'https://deno.land/x/hono@v3.11.12/middleware.ts'
-import { render, configure } from "https://esm.sh/nunjucks@3.2.4?target=deno";
+import { render, configure } from "https://esm.sh/v135/nunjucks@3.2.4/deno/nunjucks.mjs";
 import { relative } from "https://deno.land/std@0.181.0/path/mod.ts";
 import { newProject, getProjectById, setProjectName, setProjectContent, watchProjectForChanges, getProjectsByUserId } from "./model.ts";
 import { viewPath, staticPath, port } from "./config.ts";
