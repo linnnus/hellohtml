@@ -1,10 +1,10 @@
 /// <reference lib="deno.unstable" />
 
-import { Hono } from "https://deno.land/x/hono@v3.11.12/mod.ts";
-import { getCookie, setCookie } from "https://deno.land/x/hono@v3.11.12/helper/cookie/index.ts";
-import { serveStatic } from 'https://deno.land/x/hono@v3.11.12/middleware.ts'
-import nunjucks from "https://deno.land/x/nunjucks@3.2.4/mod.js";
-import { relative } from "https://deno.land/std@0.181.0/path/mod.ts";
+import { Hono } from "$hono";
+import { serveStatic } from "$hono/middleware.ts";
+import { getCookie, setCookie } from "$hono/helper/cookie/index.ts";
+import nunjucks from "$nunjucks";
+import { relative } from "$std/path/mod.ts";
 import { newProject, getProjectById, setProjectName, setProjectContent, watchProjectForChanges, getProjectsByUserId } from "./model.ts";
 import { viewPath, staticPath, port } from "./config.ts";
 

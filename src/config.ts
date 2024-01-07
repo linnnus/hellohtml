@@ -1,4 +1,4 @@
-import { join, fromFileUrl, dirname } from "https://deno.land/std@0.181.0/path/mod.ts";
+import { join, fromFileUrl, dirname } from "$std/path/mod.ts";
 
 const base = Deno.env.get("HELLOHTML_BASE_DIR") ?? dirname(dirname(fromFileUrl(import.meta.url)));
 

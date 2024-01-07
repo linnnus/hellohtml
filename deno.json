@@ -1,0 +1,11 @@
+{
+	"tasks": {
+		"dev": "deno run --unstable-kv --allow-read=. --allow-write=. --allow-net=0.0.0.0:8538 --allow-env --watch src/server.ts"
+	},
+	"imports": {
+		"$hono": "https://deno.land/x/hono@v3.11.12/mod.ts",
+		"$hono/": "https://deno.land/x/hono@v3.11.12/",
+		"$nunjucks": "https://deno.land/x/nunjucks@3.2.4/mod.js",
+		"$std/": "https://deno.land/std@0.181.0/"
+	}
+}
