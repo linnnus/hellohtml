@@ -25,17 +25,20 @@ export async function newProject(ownerId: string): Promise<Project> {
 <html>
 	<head>
 		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
 		<style>
 			p {
 				color: blue;
 			}
 		</style>
-		<script defer>
-			console.log("hello!");
-		</script>
 	</head>
 	<body>
-		<p>Hello there!</p>
+		<main>
+			<p>Hello there!</p>
+		</main>
+		<script>
+			console.log("hello!");
+		</script>
 	</body>
 </html>`,
 	};
