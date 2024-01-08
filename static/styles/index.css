@@ -2,6 +2,7 @@
 
 body {
 	background-image: url(/static/images/paper.jpeg);
+	font-size: 1.2rem;
 }
 
 main {
