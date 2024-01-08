@@ -157,7 +157,7 @@ deleteButton.addEventListener("click", async (_) => {
           ` See dev console for more info.`,
       );
     } else {
-      window.location.reload();
+      window.location = "/";
     }
   }
 });
