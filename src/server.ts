@@ -98,24 +98,24 @@ app.get("/project/:id/edit.html", async c => {
 	});
 });
 
-app.get("/project/:id/view.html", async c => {
-	const projectId = c.req.param("id");
-	const project = await getProjectById(projectId);
-	return c.html(project.content);
-});
-
-app.patch("/project/:id/set-name", async c => {
+app.patch("/project/:id/name", async c => {
 	const projectId = c.req.param("id");
 	const newName = await c.req.text();
 	await setProjectName(projectId, newName);
 	return new Response(null, { status: 204, statusText: "Updated name" });
 });
 
-app.patch("/project/:id/set-content", async c => {
+app.patch("/project/:id/content", async c => {
 	const projectId = c.req.param("id");
 	const newContent = await c.req.text();
 	await setProjectContent(projectId, newContent);
 	return new Response(null, { status: 204, statusText: "Updated content" });
+});
+
+app.get("/project/:id/content", async c => {
+	const projectId = c.req.param("id");
+	const project = await getProjectById(projectId);
+	return c.html(project.content);
 });
 
 app.delete("/project/:id", async c => {

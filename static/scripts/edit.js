@@ -7,7 +7,7 @@ const nameInput = document.getElementById("name");
 
 async function handleInputChange() {
   const response = await fetch(
-    `/project/${window.helloHtmlProjectId}/set-content`,
+    `/project/${window.helloHtmlProjectId}/content`,
     {
       method: "PATCH",
       headers: { "Content-Type": "text/plain" },
@@ -37,7 +37,7 @@ inputArea.addEventListener("input", debounce(handleInputChange, 2000));
 
 async function handleNameChange() {
   const response = await fetch(
-    `/project/${window.helloHtmlProjectId}/set-name`,
+    `/project/${window.helloHtmlProjectId}/name`,
     {
       method: "PATCH",
       headers: { "Content-Type": "text/plain" },
