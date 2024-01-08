@@ -63,22 +63,36 @@ h1 {
 	color: white;
 	background-image: linear-gradient(30deg, #c1a502 0%, #FFC107 25%, yellow 51%, #ff357f 100%);
 	background-size: 300% 300%;
+	animation: slide-background 20s ease infinite,
+	           wiggle 2s ease-in-out infinite alternate;
 }
 
 .button.blue {
 	color: white;
 	background-image: linear-gradient(-45deg, yellow 0%, blue 25%, magenta 51%, #ff357f 100%);
 	background-size: 300% 300%;
+	animation: slide-background 20s ease infinite,
+	           pulsate 1s ease-in-out infinite alternate;
 }
 
-@media not (prefers-reduced-motion) {
-	.button.yellow, .button.blue {
-		animation: slide-background 20s ease infinite;
-	}
+@keyframes slide-background {
+	  0% { background-position: 0% 50%; }
+	 50% { background-position: 100% 50%; }
+	100% { background-position: 0% 50%; }
+}
 
-	@keyframes slide-background {
-		  0% { background-position: 0% 50%; }
-		 50% { background-position: 100% 50%; }
-		100% { background-position: 0% 50%; }
+@keyframes wiggle {
+	  0% { transform: rotate(-5deg); }
+	100% { transform: rotate(+5deg); }
+}
+
+@keyframes pulsate {
+	  0% { transform: scale(1); }
+	100% { transform: scale(1.2); }
+}
+
+@media (prefers-reduced-motion) {
+	.button.yellow, .button.blue {
+		animation: none;
 	}
 }
