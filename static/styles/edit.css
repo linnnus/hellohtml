@@ -19,6 +19,10 @@ header {
 	grid-column: 1 / 3;
 	padding: 1em;
 	background-image: url(/static/images/kitten-50.jpeg);
+
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
 }
 
 header input {

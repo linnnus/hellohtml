@@ -5,7 +5,7 @@ import { serveStatic } from "$hono/middleware.ts";
 import { getCookie, setCookie } from "$hono/helper/cookie/index.ts";
 import nunjucks from "$nunjucks";
 import { relative } from "$std/path/mod.ts";
-import { newProject, getProjectById, setProjectName, setProjectContent, watchProjectForChanges, getProjectsByUserId } from "./model.ts";
+import { newProject, getProjectById, setProjectName, setProjectContent, watchProjectForChanges, getProjectsByUserId, deleteProject } from "./model.ts";
 import { viewPath, staticPath, port } from "./config.ts";
 
 const app = new Hono<{
@@ -28,7 +28,7 @@ const app = new Hono<{
 //
 // [0]: https://github.com/honojs/middleware/blob/0d7244b5bbcc0b628f5fe9f032c9542b74531b7d/packages/react-renderer/src/index.ts#L5-L9
 // [1]: https://mozilla.github.io/nunjucks
-declare module "https://deno.land/x/hono@v3.11.12/mod.ts" {
+declare module "$hono" {
 	interface ContextRenderer {
 		(view: string, props?: {
 			layout?: string,
@@ -108,14 +108,21 @@ app.patch("/project/:id/set-name", async c => {
 	const projectId = c.req.param("id");
 	const newName = await c.req.text();
 	await setProjectName(projectId, newName);
-	return new Response(null, { status: 204 });
+	return new Response(null, { status: 204, statusText: "Updated name" });
 });
 
 app.patch("/project/:id/set-content", async c => {
 	const projectId = c.req.param("id");
 	const newContent = await c.req.text();
 	await setProjectContent(projectId, newContent);
-	return new Response(null, { status: 204 });
+	return new Response(null, { status: 204, statusText: "Updated content" });
+});
+
+app.delete("/project/:id", async c => {
+	const projectId = c.req.param("id");
+	const userId = c.get("userId");
+	await deleteProject(projectId, userId);
+	return new Response(null, { status: 204, statusText: "Deleted post" });
 });
 
 app.get("/project/:id/event-stream", c => {

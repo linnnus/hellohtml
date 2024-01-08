@@ -103,6 +103,18 @@ export async function setProjectContent(projectId: string, newContent: string) {
 	checkCommit(commitResult);
 }
 
+export async function deleteProject(projectId: string, userId: string) {
+	const project = await getProjectById(projectId);
+	checkPermissions(project, userId);
+	const primaryKey = ["projectsById", project.id];
+	const userKey = ["projectsByOwnerId", project.ownerId, project.id];
+	const commitResult = await kv.atomic()
+		.delete(primaryKey)
+		.delete(userKey)
+		.commit();
+	checkCommit(commitResult);
+}
+
 export function watchProjectForChanges(projectId: string): ReadableStream<Project> {
 	const key = ["projectsById", projectId];
 	const resultStream = kv.watch<[Project]>([key]);
@@ -114,6 +126,12 @@ export function watchProjectForChanges(projectId: string): ReadableStream<Projec
 		}
 	}));
 	return projectStream;
+}
+
+function checkPermissions(project: Project, userId: string) {
+	if (project.ownerId !== userId) {
+		throw new HTTPException(403, { message: "Non-owners cannot delete repositories." });
+	}
 }
 
 function checkResult(result: Deno.KvEntryMaybe<Project>): asserts result is Deno.KvEntry<Project> {

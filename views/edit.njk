@@ -15,6 +15,10 @@
 	<input type="text" value="{{project.name}}" id="name" />
 	{%if readonly %}
 		<span>Read-only mode</span>
+	{% else %}
+		<div class="actions">
+			<button id="deleteAction">delete</button>
+		</div>
 	{% endif %}
 </header>
 <textarea spellcheck="false" id="input">{{project.content}}</textarea>
