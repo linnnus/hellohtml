@@ -12,19 +12,19 @@ for the frontend and [deno] for the backend.
 
 here's an overview of the different files ordered by approximate importance:
 
-1. `index.html`: ugliest project page known to man
-2. `edit.html`: the editor view. that's the "just a textare and an iframe" part. 
-3. `edit.js`: provides interactivity to `edit.html`. uploads changes to content and refreshes iframe.
-4. `server.ts`: worst possible static file server + interacts with database + notifies clients of changes using [server-sent events][SSE]
-5. `default.html`: new projects are populated with this file
-6. `flake.nix`: defines a nixos service and a [nix] package. deeply horrific stuff
-7. `lock.json`: deno's dependencies are just urls. this file ensures there's no tomfoolery going on. `flake.nix` also uses this to achieve deterministic dependencies.
-8. `flake.lock`: super boringgggg
+1. `views/`: templates for html shown to user
+1. `src/server.ts`: renders views in `views/` + interacts with database through `src/model.ts` + notifies clients of changes using [server-sent events][SSE]
+1. `src/model.ts`: interacts with database + contains business logic
+1. `src/config.ts`: contains various configuration variables. can be overwritten with environment variables
+1. `flake.nix`: defines a nixos service and a [nix] package. deeply horrific stuff
+1. `deno.lock`: deno's dependencies are just urls. this file ensures there's no tomfoolery going on. `flake.nix` also uses this to achieve deterministic dependencies.
+1. `flake.lock` + `deno.json` + `import_map.json`: super boringgggg
 
 at some point i'd like to...
 
 - [ ] add syntax highlighting. chris [did this][textarea-syntax] in vanilla js without too much work
 - [ ] add support for multiple files. like [glitch] except only for static files and also way worse
+- [ ] add a "clone" action in readonly-mode
 
 [codepen]: https://codepen.io/
 [textarea-syntax]: https://css-tricks.com/creating-an-editable-textarea-that-supports-syntax-highlighted-code/
