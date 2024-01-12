@@ -1,14 +1,19 @@
 {% extends layout %}
 
+{% block head %}
+<link rel="stylesheet" href="/static/styles/project.css">
+{% endblock %}
+
 {% block body %}
 <main>
 	<h1>projects</h1>
-	<p>here are your projects.</p>
-	<p>you have {{projects.length}} projects</p>
-	<ul>
-		{% for project in projects %}
-			<li><a href="/project/{{project.id}}/edit.html">{{project.name}}</a></li>
-		{% endfor %}
-	</ul>
+	<p>&ldquo;new project&rdquo;</p>
+	<p>this time, for sure!</p>
+	<p>project nr. {{projects.length}}</p>
+	<div role="list">
+	{% for project in projects %}
+		<p role="listitem"><a href="/project/{{project.id}}/edit.html">{{project.name}}</a></p>
+	{% endfor %}
+	</div>
 </main>
 {% endblock %}
