@@ -25,6 +25,7 @@ at some point i'd like to...
 - [ ] add syntax highlighting. chris [did this][textarea-syntax] in vanilla js without too much work
 - [ ] add support for multiple files. like [glitch] except only for static files and also way worse
 - [ ] add a "clone" action in readonly-mode
+- [ ] remove trailing whitespace automatically
 
 [codepen]: https://codepen.io/
 [textarea-syntax]: https://css-tricks.com/creating-an-editable-textarea-that-supports-syntax-highlighted-code/

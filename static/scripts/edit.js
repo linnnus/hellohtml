@@ -1,5 +1,6 @@
-// TODO: Fetch may also throw an error. We should display an error to the user
-// in that case as well.
+// TODO: Fetch may also throw an error. We should display an error to the user in that case as well.
+// TODO: Split into seperate scripts. Use progessive enhancement.
+
 // UPLOAD INPUT ----------------------------------------------------------------
 
 const inputArea = document.getElementById("input");
