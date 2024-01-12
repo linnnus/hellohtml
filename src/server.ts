@@ -5,7 +5,7 @@ import { serveStatic } from "$hono/middleware.ts";
 import { getCookie, setCookie } from "$hono/helper/cookie/index.ts";
 import nunjucks from "$nunjucks";
 import { relative } from "$std/path/mod.ts";
-import { newProject, getProjectById, setProjectName, setProjectContent, watchProjectForChanges, getProjectsByUserId, deleteProject } from "./model.ts";
+import { newProject, getProjectById, setProjectName, setProjectContent, watchProjectForChanges, getProjectsByUserId, deleteProject, cloneProject } from "./model.ts";
 import { viewPath, staticPath, port } from "./config.ts";
 
 const app = new Hono<{
@@ -125,6 +125,13 @@ app.delete("/project/:id", async c => {
 	const userId = c.get("userId");
 	await deleteProject(projectId, userId);
 	return new Response(null, { status: 204, statusText: "Deleted post" });
+});
+
+app.post("/project/:id/clone", async c => {
+	const projectId = c.req.param("id");
+	const userId = c.get("userId");
+	const project = await cloneProject(projectId, userId);
+	return c.redirect(`/project/${project.id}/edit.html`, 302);
 });
 
 app.get("/project/:id/event-stream", c => {

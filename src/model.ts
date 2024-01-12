@@ -134,6 +134,23 @@ export function watchProjectForChanges(projectId: string): ReadableStream<Projec
 	return projectStream;
 }
 
+export async function cloneProject(projectId: string, newOwnerId: string): Promise<Project> {
+	const project = await getProjectById(projectId);
+	project.ownerId = newOwnerId;
+
+	const primaryKey = ["projectsById", project.id];
+	const userKey = ["projectsByOwnerId", newOwnerId, project.id];
+	const result = await kv.atomic()
+		.check({ key: primaryKey, versionstamp: null })
+		.check({ key: userKey, versionstamp: null })
+		.set(primaryKey, project)
+		.set(userKey, project)
+		.commit();
+	checkCommit(result);
+
+	return project;
+}
+
 function checkPermissions(project: Project, userId: string) {
 	if (project.ownerId !== userId) {
 		throw new HTTPException(403, { message: "Non-owners cannot modify projects." });

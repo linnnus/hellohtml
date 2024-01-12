@@ -12,14 +12,18 @@
 
 {% block body %}
 <header>
-	<input type="text" value="{{project.name}}" id="name" />
-	{%if readonly %}
-		<span>Read-only mode</span>
-	{% else %}
-		<div class="actions">
+	<div>
+		<input type="text" value="{{project.name}}" id="name" />
+		{%if readonly %}
+			<span class="readonly">Read-only mode!!!</span>
+		{% endif %}
+	</div>
+	<div class="actions">
+		<button id="cloneAction">clone</button>
+		{%if not readonly %}
 			<button id="deleteAction">delete</button>
-		</div>
-	{% endif %}
+		{% endif %}
+	</div>
 </header>
 <textarea spellcheck="false" id="input">{{project.content}}</textarea>
 <iframe id="output" src="/project/{{project.id}}/content" allow="accelerometer; camera; encrypted-media; display-capture; geolocation; gyroscope; microphone; midi; clipboard-read; clipboard-write; web-share" allowfullscreen="true" allowpaymentrequest="true" allowtransparency="true" sandbox="allow-forms allow-modals allow-pointer-lock allow-popups allow-same-origin allow-scripts allow-top-navigation-by-user-activation allow-downloads allow-presentation" class="result-iframe iframe-visual-update" name="Output window" loading="lazy"></iframe>

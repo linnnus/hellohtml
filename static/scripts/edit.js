@@ -146,6 +146,7 @@ eventSource.addEventListener("message", (_) => {
 // ACTIONS ---------------------------------------------------------------------
 
 const deleteButton = document.getElementById("deleteAction");
+const cloneButton = document.getElementById("cloneAction");
 
 deleteButton.addEventListener("click", async (_) => {
   if (confirm("Are you sure you want to PERMANENTLY delete this project?")) {
