@@ -140,6 +140,7 @@ const eventSource = new EventSource(
 );
 eventSource.addEventListener("message", (_) => {
   console.log("%cRefreshing...", "font-size: x-large");
+  console.clear();
   outputFrame.contentWindow.location.reload();
 });
 
