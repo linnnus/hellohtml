@@ -34,6 +34,12 @@ header input {
 	width: 50ch;
 }
 
+.readonly {
+	color: red;
+	font-weight: bold;
+	text-shadow: 0 0 3px BLACK;
+}
+
 #input, #output {
 	height: 100%;
 	border: none;
