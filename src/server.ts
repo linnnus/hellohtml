@@ -101,14 +101,16 @@ app.get("/project/:id/edit.html", async c => {
 app.patch("/project/:id/name", async c => {
 	const projectId = c.req.param("id");
 	const newName = await c.req.text();
-	await setProjectName(projectId, newName);
+	const userId = c.get("userId");
+	await setProjectName(projectId, newName, userId);
 	return new Response(null, { status: 204, statusText: "Updated name" });
 });
 
 app.patch("/project/:id/content", async c => {
 	const projectId = c.req.param("id");
 	const newContent = await c.req.text();
-	await setProjectContent(projectId, newContent);
+	const userId = c.get("userId");
+	await setProjectContent(projectId, newContent, userId);
 	return new Response(null, { status: 204, statusText: "Updated content" });
 });
 

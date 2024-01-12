@@ -72,9 +72,10 @@ export async function getProjectsByUserId(userId: string): Promise<Project[]> {
 }
 
 // Maybe throws. This should be part of the type smh.
-export async function setProjectName(projectId: string, newName: string) {
+export async function setProjectName(projectId: string, newName: string, userId: string) {
 	const projectResult = await kv.get<Project>(["projectsById", projectId]);
 	checkResult(projectResult);
+	checkPermissions(projectResult.value, userId);
 
 	const project = projectResult.value;
 	const newProject = { ...project, name: newName };
@@ -89,9 +90,10 @@ export async function setProjectName(projectId: string, newName: string) {
 	checkCommit(commitResult);
 }
 
-export async function setProjectContent(projectId: string, newContent: string) {
+export async function setProjectContent(projectId: string, newContent: string, userId: string) {
 	const projectResult = await kv.get<Project>(["projectsById", projectId]);
 	checkResult(projectResult);
+	checkPermissions(projectResult.value, userId);
 
 	const project = projectResult.value;
 	const newProject = { ...project, content: newContent };
@@ -109,6 +111,7 @@ export async function setProjectContent(projectId: string, newContent: string) {
 export async function deleteProject(projectId: string, userId: string) {
 	const project = await getProjectById(projectId);
 	checkPermissions(project, userId);
+
 	const primaryKey = ["projectsById", project.id];
 	const userKey = ["projectsByOwnerId", project.ownerId, project.id];
 	const commitResult = await kv.atomic()
@@ -133,7 +136,7 @@ export function watchProjectForChanges(projectId: string): ReadableStream<Projec
 
 function checkPermissions(project: Project, userId: string) {
 	if (project.ownerId !== userId) {
-		throw new HTTPException(403, { message: "Non-owners cannot delete repositories." });
+		throw new HTTPException(403, { message: "Non-owners cannot modify projects." });
 	}
 }
 
