@@ -45,7 +45,6 @@ header input {
 	grid-column: 1 / 2;
 	resize: horizontal;
 	width: 50vw;
-	padding: 1em;
 
 	/* https://stackoverflow.com/a/23208450 */
 	background-image: linear-gradient(
