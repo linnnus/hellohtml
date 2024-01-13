@@ -20,6 +20,7 @@ async function handleInputChange() {
       `Failed to send updated content to server: ${response.statusText}.` +
         ` See dev console for more info.`,
     );
+    console.log(response);
     return;
   }
 }
@@ -50,6 +51,7 @@ async function handleNameChange() {
       `Failed to send updated name to server: ${response.statusText}.` +
         ` See dev console for more info.`,
     );
+    console.log(response);
     return;
   }
 
@@ -152,14 +154,15 @@ const reloadButton = document.getElementById("reloadAction");
 
 deleteButton.addEventListener("click", async (_) => {
   if (confirm("Are you sure you want to PERMANENTLY delete this project?")) {
-    const result = await fetch(`/project/${window.helloHtmlProjectId}`, {
+    const response = await fetch(`/project/${window.helloHtmlProjectId}`, {
       method: "DELETE",
     });
-    if (!result.ok) {
+    if (!response.ok) {
       alert(
-        `Failed to send updated name to server: ${response.statusText}.` +
+        `Failed to delete project: ${response.statusText}.` +
           ` See dev console for more info.`,
       );
+      console.log(response);
     } else {
       window.location = "/";
     }
