@@ -140,10 +140,13 @@ const outputFrame = document.getElementById("output");
 const eventSource = new EventSource(
   `/project/${window.helloHtmlProjectId}/event-stream`,
 );
-eventSource.addEventListener("message", (_) => {
-  console.log("%cRefreshing...", "font-size: x-large");
+eventSource.addEventListener("message", (event) => {
   console.clear();
-  outputFrame.contentWindow.location.reload();
+  console.log("%cRefreshing...", "font-size: x-large");
+  const data = JSON.parse(event.data);
+  console.log(data);
+  outputFrame.srcdoc = data.content;
+  // outputFrame.contentWindow.location.reload();
 });
 
 // ACTIONS ---------------------------------------------------------------------
