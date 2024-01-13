@@ -83,7 +83,7 @@ app.use("*", async (c, next) => {
 app.post("/project/new", async c => {
 	const userId = c.get("userId");
 	const project = await newProject(userId);
-	return c.redirect(`/project/${project.id}/edit.html`, 302);
+	return c.redirect(`/project/${project.id}/edit.html`, 303);
 });
 
 app.get("/project/:id/edit.html", async c => {
