@@ -127,11 +127,14 @@ app.delete("/project/:id", async c => {
 	return new Response(null, { status: 204, statusText: "Deleted post" });
 });
 
-app.post("/project/:id/clone", async c => {
+app.on("COPY", "/project/:id", async c => {
 	const projectId = c.req.param("id");
 	const userId = c.get("userId");
-	const project = await cloneProject(projectId, userId);
-	return c.redirect(`/project/${project.id}/edit.html`, 302);
+	const newProject = await cloneProject(projectId, userId);
+	await new Promise(resolve => setTimeout(resolve, 3000));
+	// Note the use of the 303 'See other' status code;
+	// we do not want the client to make a COPY request to …/edit.html!
+	return c.redirect(`/project/${newProject.id}/edit.html`, 303);
 });
 
 app.get("/project/:id/event-stream", c => {

@@ -165,4 +165,22 @@ deleteButton.addEventListener("click", async (_) => {
   }
 });
 
+cloneButton.addEventListener("click", async (_) => {
+  const response = await fetch(`/project/${window.helloHtmlProjectId}`, {
+    method: "COPY",
+  });
+  if (!response.ok) {
+    alert(
+      `Failed to clone project: ${response.statusText}.` +
+        ` See dev console for more info.`,
+    );
+    console.log(response);
+  } else {
+    // Manually follow redirected response.
+    // See: https://stackoverflow.com/a/56974253
+    console.assert(response.redirected);
+    window.location.href = response.url;
+  }
+});
+
 // vi: ft=javascript et ts=2 sw=2 tw=80

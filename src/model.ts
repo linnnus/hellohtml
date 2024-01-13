@@ -136,10 +136,12 @@ export function watchProjectForChanges(projectId: string): ReadableStream<Projec
 
 export async function cloneProject(projectId: string, newOwnerId: string): Promise<Project> {
 	const project = await getProjectById(projectId);
-	project.ownerId = newOwnerId;
+
+	project.id = crypto.randomUUID(); // assign new id
+	project.ownerId = newOwnerId;     // transfer ownership
 
 	const primaryKey = ["projectsById", project.id];
-	const userKey = ["projectsByOwnerId", newOwnerId, project.id];
+	const userKey = ["projectsByOwnerId", project.ownerId, project.id];
 	const result = await kv.atomic()
 		.check({ key: primaryKey, versionstamp: null })
 		.check({ key: userKey, versionstamp: null })
