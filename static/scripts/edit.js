@@ -148,6 +148,7 @@ eventSource.addEventListener("message", (_) => {
 
 const deleteButton = document.getElementById("deleteAction");
 const cloneButton = document.getElementById("cloneAction");
+const reloadButton = document.getElementById("reloadAction");
 
 deleteButton.addEventListener("click", async (_) => {
   if (confirm("Are you sure you want to PERMANENTLY delete this project?")) {
@@ -181,6 +182,10 @@ cloneButton.addEventListener("click", async (_) => {
     console.assert(response.redirected);
     window.location.href = response.url;
   }
+});
+
+reloadButton.addEventListener("click", (_) => {
+  outputFrame.contentWindow.location.reload();
 });
 
 // vi: ft=javascript et ts=2 sw=2 tw=80
