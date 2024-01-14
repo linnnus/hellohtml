@@ -26,6 +26,7 @@ at some point i'd like to...
 - [ ] add support for multiple files. like [glitch] except only for static files and also way worse
 - [ ] add a "clone" action in readonly-mode
 - [ ] remove trailing whitespace automatically
+- [ ] isolate iframe in own process to avoid `<script>while(1);</script>` breaking editor
 
 [codepen]: https://codepen.io/
 [textarea-syntax]: https://css-tricks.com/creating-an-editable-textarea-that-supports-syntax-highlighted-code/
