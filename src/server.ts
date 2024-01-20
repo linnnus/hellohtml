@@ -5,6 +5,7 @@ import { serveStatic } from "$hono/middleware.ts";
 import { getCookie, setCookie } from "$hono/helper/cookie/index.ts";
 import nunjucks from "$nunjucks";
 import { relative } from "$std/path/mod.ts";
+import { mergeReadableStreams } from /*"./util.ts"*/"$std/streams/merge_readable_streams.ts";
 import { newProject, getProjectById, setProjectName, setProjectContent, watchProjectForChanges, getProjectsByUserId, deleteProject, cloneProject } from "./model.ts";
 import { viewPath, staticPath, port } from "./config.ts";
 
@@ -138,18 +139,43 @@ app.on("COPY", "/project/:id", async c => {
 });
 
 app.get("/project/:id/event-stream", c => {
-	return c.stream(async (controller) => {
-		await controller.writeln("retry: 1000\n\n");
+	const textEncoder = new TextEncoder();
 
-		const projectId = c.req.param("id");
-		for await (const project of watchProjectForChanges(projectId)) {
-			controller.writeln(`data: ${JSON.stringify(project)}\n\n`);
+	// Proxies and the like may kill connection, if it is not covered in a while.
+	// See: https://community.cloudflare.com/t/are-server-sent-events-sse-supported-or-will-they-trigger-http-524-timeouts/499621/7
+	// See: https://developer.mozilla.org/en-US/docs/Web/API/Server-sent_events/Using_server-sent_events#data-only_messages
+	let intervalId: number;
+	const keepAliveStream = new ReadableStream({
+		start(controller) {
+			intervalId = setInterval(() => {
+				controller.enqueue(textEncoder.encode(`:keepalive\n\n`));
+			}, 5 * 1000);
+		},
+		cancel() {
+			clearInterval(intervalId);
 		}
-	}, 200, {
+	});
+
+	const projectId = c.req.param("id");
+	const changeStream = watchProjectForChanges(projectId);
+	const changeMessageStream = changeStream.pipeThrough(
+		new TransformStream({
+			start(controller) {
+				controller.enqueue(textEncoder.encode(`retry: 2000\n\n`));
+			},
+			transform(chunk, controller) {
+				controller.enqueue(textEncoder.encode(`data: ${JSON.stringify(chunk)}\n\n`));
+			}
+		}),
+	);
+
+	const body = mergeReadableStreams(keepAliveStream, changeMessageStream);
+
+	return c.newResponse(body, 200, {
 		"Content-Type": "text/event-stream",
 		"Transfer-Encoding": "chunked",
-		"x-Content-Type-Options": "nosniff",
-		"x-accel-buffering": "no",
+		"X-Content-Type-Options": "nosniff",
+		"X-Accel-Buffering": "no",
 	});
 });
 
