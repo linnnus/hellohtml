@@ -16,16 +16,14 @@ here's an overview of the different files ordered by approximate importance:
 1. `src/server.ts`: renders views in `views/` + interacts with database through `src/model.ts` + notifies clients of changes using [server-sent events][SSE]
 1. `src/model.ts`: interacts with database + contains business logic
 1. `src/config.ts`: contains various configuration variables. can be overwritten with environment variables
-1. `flake.nix`: defines a nixos service and a [nix] package. deeply horrific stuff
 1. `deno.lock`: deno's dependencies are just urls. this file ensures there's no tomfoolery going on. `flake.nix` also uses this to achieve deterministic dependencies.
-1. `flake.lock` + `deno.json` + `import_map.json`: super boringgggg
+1. `deno.json`: super boringgggg
 
 at some point i'd like to...
 
 - [ ] add syntax highlighting. chris [did this][textarea-syntax] in vanilla js without too much work
-- [ ] add support for multiple files. like [glitch] except only for static files and also way worse
-- [ ] add a "clone" action in readonly-mode
 - [ ] remove trailing whitespace automatically
+- [ ] add support for multiple files. like [glitch] except only for static files and also way worse
 - [ ] isolate iframe in own process to avoid `<script>while(1);</script>` breaking editor
 
 [codepen]: https://codepen.io/
