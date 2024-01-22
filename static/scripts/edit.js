@@ -146,7 +146,7 @@ eventSource.addEventListener("message", (event) => {
   const data = JSON.parse(event.data);
   console.log(data);
   outputFrame.srcdoc = data.content;
-  // outputFrame.contentWindow.location.reload();
+  window.title = data.name;
 });
 
 // ACTIONS ---------------------------------------------------------------------
