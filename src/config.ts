@@ -17,3 +17,6 @@ export const port = parseInt(Deno.env.get("HELLOHTML_PORT") ?? "8538");
 
 // Whether to enable debugging features.
 export const debug = Deno.env.has("HELLOHTML_DEBUG");
+
+// Domain to use to force OOPIFs. Should be counted as a separate site.
+export const altDomain = Deno.env.get("HELLOHTML_ALT_DOMAIN") ?? "<missing alt domain>";

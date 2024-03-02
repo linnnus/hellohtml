@@ -7,7 +7,7 @@ import nunjucks from "$nunjucks";
 import { relative } from "$std/path/mod.ts";
 import { mergeReadableStreams } from /*"./util.ts"*/"$std/streams/merge_readable_streams.ts";
 import { newProject, getProjectById, setProjectName, setProjectContent, watchProjectForChanges, getProjectsByUserId, deleteProject, cloneProject } from "./model.ts";
-import { viewPath, staticPath, port, debug } from "./config.ts";
+import { viewPath, staticPath, port, debug, altDomain } from "./config.ts";
 
 const app = new Hono<{
 	Variables: {
@@ -99,7 +99,7 @@ app.get("/project/:id/edit.html", async c => {
 		// be counted as another site by Chrome's site-isolation policy (and equivalent
 		// measures in other browsers) in order to ensure the iframe runs in a separate
 		// thread.
-		location: debug ? `http://127.0.0.1:${port}` : "https://hellohtml2.linus.onl",
+		location: debug ? `http://127.0.0.1:${port}` : altDomain,
 		readonly: project.ownerId != userId,
 	});
 });
