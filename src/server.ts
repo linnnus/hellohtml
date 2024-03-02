@@ -99,7 +99,7 @@ app.get("/project/:id/edit.html", async c => {
 		// be counted as another site by Chrome's site-isolation policy (and equivalent
 		// measures in other browsers) in order to ensure the iframe runs in a separate
 		// thread.
-		location: debug ? `http://127.0.0.1:${port}` : altDomain,
+		location: debug ? `http://127.0.0.1:${port}` : `https://${altDomain}`,
 		readonly: project.ownerId != userId,
 	});
 });
