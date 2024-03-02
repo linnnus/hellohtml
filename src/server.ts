@@ -95,11 +95,21 @@ app.get("/project/:id/edit.html", async c => {
 		project,
 		userId,
 		title: project.name,
-		// This is the "alternative" location to load the iframe from. It should
-		// be counted as another site by Chrome's site-isolation policy (and equivalent
-		// measures in other browsers) in order to ensure the iframe runs in a separate
-		// thread.
-		location: debug ? `http://127.0.0.1:${port}` : `https://${altDomain}`,
+		// Okay so here's the deal: we want the iframe to run on a separate thread. This makes the editor more
+		// robust, as it means it won't soft-lock if you accidentally put an infinite loop in the code you're
+		// working on.
+		//
+		// The temporary (and thoroughly shitty) solution that I've come up with is based on out of process
+		// iframes [0]. This is a security thing that Chrome does where cross-site iframes are run in a separate
+		// process. As a side effect, it also means that the two event loops can't fuck each other up.
+		//
+		// The key word in the above paragraph is "cross-site". I couldn't figure out a neater way to do this,
+		// so I just bought another domain, which also points to this server. The lines below are figuring out
+		// what this "other domain" should be. For development, I have figured out that "localhost" and
+		// "127.0.0.1" are considered separate sites.
+		//
+		// [0]: https://www.chromium.org/developers/design-documents/oop-iframes/#current-uses
+		location: debug ? `127.0.0.1:${port}` : altDomain,
 		readonly: project.ownerId != userId,
 	});
 });
