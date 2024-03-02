@@ -7,7 +7,7 @@ import nunjucks from "$nunjucks";
 import { relative } from "$std/path/mod.ts";
 import { mergeReadableStreams } from /*"./util.ts"*/"$std/streams/merge_readable_streams.ts";
 import { newProject, getProjectById, setProjectName, setProjectContent, watchProjectForChanges, getProjectsByUserId, deleteProject, cloneProject } from "./model.ts";
-import { viewPath, staticPath, port } from "./config.ts";
+import { viewPath, staticPath, port, debug } from "./config.ts";
 
 const app = new Hono<{
 	Variables: {
@@ -95,7 +95,20 @@ app.get("/project/:id/edit.html", async c => {
 		project,
 		userId,
 		title: project.name,
+		// This is the "alternative" location to load the iframe from. It should
+		// be counted as another site by Chrome's site-isolation policy (and equivalent
+		// measures in other browsers) in order to ensure the iframe runs in a separate
+		// thread.
+		location: debug ? `http://127.0.0.1:${port}` : "https://hellohtml2.linus.onl",
 		readonly: project.ownerId != userId,
+	});
+});
+
+app.get("/project/:id/view.html", async c => {
+	const projectId = c.req.param("id");
+	const project = await getProjectById(projectId);
+	return c.html(project.content, 200, {
+		"Cache-Control": "no-cache",
 	});
 });
 

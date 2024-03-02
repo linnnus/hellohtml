@@ -14,3 +14,6 @@ export const dbPath = Deno.env.get("HELLOHTML_DB_PATH") ?? join(base, "hello.db"
 
 // Port for webserver to listen on.
 export const port = parseInt(Deno.env.get("HELLOHTML_PORT") ?? "8538");
+
+// Whether to enable debugging features.
+export const debug = Deno.env.has("HELLOHTML_DEBUG");

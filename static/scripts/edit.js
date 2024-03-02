@@ -145,7 +145,7 @@ eventSource.addEventListener("message", (event) => {
   console.log("%cRefreshing...", "font-size: x-large");
   const data = JSON.parse(event.data);
   console.log(data);
-  outputFrame.srcdoc = data.content;
+  reloadIframe(outputFrame);
   window.title = data.name;
 });
 
@@ -190,8 +190,18 @@ cloneButton.addEventListener("click", async (_) => {
   }
 });
 
-reloadButton.addEventListener("click", (_) => {
-  outputFrame.contentWindow.location.reload();
+reloadButton.addEventListener("click", () => {
+  reloadIframe(outputFrame);
 });
+
+// UTILITIES -------------------------------------------------------------------
+
+function reloadIframe(iframe) {
+  const tmp = iframe.src;
+  iframe.src = "about:blank";
+  setTimeout(() => {
+    iframe.src = tmp;
+  }, 10);
+}
 
 // vi: ft=javascript et ts=2 sw=2 tw=80

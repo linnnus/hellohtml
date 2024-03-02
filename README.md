@@ -24,7 +24,7 @@ at some point i'd like to...
 - [ ] add syntax highlighting. chris [did this][textarea-syntax] in vanilla js without too much work
 - [ ] remove trailing whitespace automatically
 - [ ] add support for multiple files. like [glitch] except only for static files and also way worse
-- [ ] isolate iframe in own process to avoid `<script>while(1);</script>` breaking editor
+- [x] isolate iframe in own process to avoid `<script>while(1);</script>` breaking editor
 
 [codepen]: https://codepen.io/
 [textarea-syntax]: https://css-tricks.com/creating-an-editable-textarea-that-supports-syntax-highlighted-code/

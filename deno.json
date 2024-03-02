@@ -1,6 +1,6 @@
 {
 	"tasks": {
-		"dev": "deno run --unstable-kv --allow-read=. --allow-write=. --allow-net=0.0.0.0:8538 --allow-env --watch src/server.ts"
+		"dev": "export HELLOHTML_DEBUG=1 && deno run --unstable-kv --allow-read=. --allow-write=. --allow-net=0.0.0.0:8538 --allow-env --watch src/server.ts"
 	},
 	"imports": {
 		"$hono": "https://deno.land/x/hono@v3.11.12/mod.ts",
