@@ -183,10 +183,10 @@ cloneButton.addEventListener("click", async (_) => {
     );
     console.log(response);
   } else {
-    // Manually follow redirected response.
-    // See: https://stackoverflow.com/a/56974253
-    console.assert(response.redirected);
-    window.location.href = response.url;
+    // Server sends '303 See other' with location of new project. Open it in a
+    // new tab to make it clearer to the user that this is a new project.
+    console.assert(response.status === 303);
+    window.open(response.url, "_blank");
   }
 });
 
