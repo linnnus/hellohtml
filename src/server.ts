@@ -3,6 +3,7 @@
 import { Hono } from "$hono";
 import { serveStatic } from "$hono/middleware.ts";
 import { getCookie, setCookie } from "$hono/helper/cookie/index.ts";
+import { logger } from "$hono/middleware.ts";
 import nunjucks from "$nunjucks";
 import { relative } from "$std/path/mod.ts";
 import { mergeReadableStreams } from /*"./util.ts"*/"$std/streams/merge_readable_streams.ts";
@@ -54,6 +55,8 @@ app.use("*", async (c, next) => {
 	});
 	await next();
 });
+
+app.use(logger());
 
 app.use("/", c => {
 	return c.render("index");
