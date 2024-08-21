@@ -134,9 +134,11 @@ export function watchProjectForChanges(projectId: string): ReadableStream<Projec
 	return projectStream;
 }
 
+// FIXME: Why is this operation so slow?
 export async function cloneProject(projectId: string, newOwnerId: string): Promise<Project> {
 	const project = await getProjectById(projectId);
 
+	project.name += " (clone)";       // disambiguate names
 	project.id = crypto.randomUUID(); // assign new id
 	project.ownerId = newOwnerId;     // transfer ownership
 
