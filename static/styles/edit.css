@@ -37,21 +37,9 @@ header input {
 }
 
 #input {
-	font-family: monospace;
-	color: white;
-	white-space: nowrap;
-	tab-size: 2;
-
 	grid-column: 1 / 2;
-	resize: horizontal;
 	width: 50vw;
-
-	/* https://stackoverflow.com/a/23208450 */
-	background-image: linear-gradient(
-          rgba(0, 0, 0, 0.5),
-          rgba(0, 0, 0, 0.5)
-        ),
-	radial-gradient(blue, magenta, red, yellow, green);
+	background: whitesmoke; /* NOCOMMIT */
 }
 
 #output {

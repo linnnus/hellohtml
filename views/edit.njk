@@ -6,7 +6,11 @@
 {% endblock %}
 
 {% block scripts %}
+{# Prism.js is needed by AssMirror #}
+{# Note the use of [data-manual] to inidiate that Prism.js shouldn't automatically highlight anything #}
 <script>window.helloHtmlProjectId = "{{project.id}}"</script>
+<script data-manual src="https://cdnjs.cloudflare.com/ajax/libs/prism/9000.0.1/prism.min.js" integrity="sha512-UOoJElONeUNzQbbKQbjldDf9MwOHqxNz49NNJJ1d90yp+X9edsHyJoAs6O4K19CZGaIdjI5ohK+O2y5lBTW6uQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script src="/static/scripts/ass-mirror.js"></script>
 <script src="/static/scripts/edit.js"></script>
 {% endblock %}
 
@@ -26,6 +30,6 @@
 		{% endif %}
 	</div>
 </header>
-<textarea spellcheck="false" id="input">{{project.content}}</textarea>
+<ass-mirror id="input">{{project.content}}</ass-mirror>
 <iframe id="output" src="//{{location}}/project/{{project.id}}/view.html" allow="accelerometer; camera; encrypted-media; display-capture; geolocation; gyroscope; microphone; midi; clipboard-read; clipboard-write; web-share" allowfullscreen="true" allowpaymentrequest="true" allowtransparency="true" sandbox="allow-forms allow-modals allow-pointer-lock allow-popups allow-same-origin allow-scripts allow-top-navigation-by-user-activation allow-downloads allow-presentation" class="result-iframe iframe-visual-update" name="Output window" loading="lazy"></iframe>
 {% endblock %}
