@@ -64,9 +64,9 @@ class AssMirror extends HTMLElement {
 			.edit,
 			.highlight-container,
 			.highlight-container * { /* Also add text styles to highlighting tokens */
-			  font-size: 1rem;
-			  font-family: monospace;
-			  line-height: 20pt;
+			  font-size: 10pt;
+			  font-family: monospace !important;
+			  line-height: 12pt !important; /* Have to overwrite Prism's styling */
 
 			  tab-size: 2 !important; /* Have to overwrite Prism's styling */
 			}
