@@ -84,7 +84,7 @@ const deleteButton = document.getElementById("deleteAction");
 const cloneButton = document.getElementById("cloneAction");
 const reloadButton = document.getElementById("reloadAction");
 
-deleteButton.addEventListener("click", async (_) => {
+deleteButton?.addEventListener("click", async (_) => {
   if (confirm("Are you sure you want to PERMANENTLY delete this project?")) {
     const response = await fetch(`/project/${window.helloHtmlProjectId}`, {
       method: "DELETE",
