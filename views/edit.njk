@@ -30,6 +30,10 @@
 		{% endif %}
 	</div>
 </header>
-<ass-mirror id="input">{{project.content}}</ass-mirror>
+<ass-mirror
+{%if readonly %}
+readonly
+{% endif %}
+id="input">{{project.content}}</ass-mirror>
 <iframe id="output" src="//{{location}}/project/{{project.id}}/view.html" allow="accelerometer; camera; encrypted-media; display-capture; geolocation; gyroscope; microphone; midi; clipboard-read; clipboard-write; web-share" allowfullscreen="true" allowpaymentrequest="true" allowtransparency="true" sandbox="allow-forms allow-modals allow-pointer-lock allow-popups allow-same-origin allow-scripts allow-top-navigation-by-user-activation allow-downloads allow-presentation" class="result-iframe iframe-visual-update" name="Output window" loading="lazy"></iframe>
 {% endblock %}

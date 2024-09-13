@@ -2,6 +2,8 @@
 // used as the custom element <ass-mirror /> in the HTML.
 
 class AssMirror extends HTMLElement {
+	static observedAttributes = [ "readonly" ];
+
 	constructor() {
 		super();
 	}
@@ -109,6 +111,11 @@ class AssMirror extends HTMLElement {
 		// Now that we're is fully configured, we can set the inital value that we got at the start.
 		this.edit.value = initialValue;
 		this.#updateHighlight();
+		this.#handleChangedAttributes();
+	}
+
+	attributeChangedCallback(name, _oldValue, newValue) {
+		this.#handleChangedAttributes();
 	}
 
 	#doSmartEditing(event) {
@@ -202,6 +209,16 @@ class AssMirror extends HTMLElement {
 	#syncScrollPosition() {
 		this.highlightContainer.scrollTop  = this.edit.scrollTop;
 		this.highlightContainer.scrollLeft = this.edit.scrollLeft;
+	}
+
+	#handleChangedAttributes() {
+		if (this.edit) { // attributesChangedCallback may be called before connectedCallback where we set up the DOM structure.
+			if (this.getAttribute("readonly") === "") {
+				this.edit.setAttribute("readonly", "");
+			} else {
+				this.edit.removeAttribute("readonly");
+			}
+		}
 	}
 
 	/* Expose the value kind of like a regular textarea */
