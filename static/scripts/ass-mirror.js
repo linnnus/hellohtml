@@ -83,7 +83,10 @@ class AssMirror extends HTMLElement {
 
 		// Also need to import Prism.js stylesheet into our shadow DOM.
 		// FIXME: This is super ugly!
-		this.shadowRoot.innerHTML += `<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/9000.0.1/themes/prism.min.css" integrity="sha512-/mZ1FHPkg6EKcxo0fKXF51ak6Cr2ocgDi5ytaTBjsQZIH/RNs6GF6+oId/vPe3eJB836T36nXwVh/WBl/cWT4w==" crossorigin="anonymous" referrerpolicy="no-referrer" />`;
+		const link = document.createElement("link");
+		link.rel = "stylesheet";
+ 		link.href = "/static/styles/prism.min.css";
+		shadow.appendChild(link);
 
 		const container = document.createElement("div");
 		container.classList.add("container");

@@ -2,6 +2,8 @@
 
 {% block head %}
 <link rel="stylesheet" href="/static/styles/edit.css">
+{# ass-mirror.js will load this CSS stylesheet dynamically #}
+<link rel="preload" href="/static/styles/prism.min.css" as="stylesheet">
 <link rel="preload" href="/static/images/kitten-50.jpeg" as="image">
 {% endblock %}
 
@@ -9,7 +11,7 @@
 {# Prism.js is needed by AssMirror #}
 {# Note the use of [data-manual] to inidiate that Prism.js shouldn't automatically highlight anything #}
 <script>window.helloHtmlProjectId = "{{project.id}}"</script>
-<script data-manual src="https://cdnjs.cloudflare.com/ajax/libs/prism/9000.0.1/prism.min.js" integrity="sha512-UOoJElONeUNzQbbKQbjldDf9MwOHqxNz49NNJJ1d90yp+X9edsHyJoAs6O4K19CZGaIdjI5ohK+O2y5lBTW6uQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script data-manual src="/static/scripts/prism.min.js"></script>
 <script src="/static/scripts/ass-mirror.js"></script>
 <script src="/static/scripts/edit.js"></script>
 {% endblock %}
