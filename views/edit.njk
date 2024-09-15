@@ -18,7 +18,8 @@
 
 {% block body %}
 <header>
-	<div>
+	<div class="header-nav">
+		<a aria-label="Back" class="header-nav__back" href="/projects.html">&#x25C0;</a>
 		<input type="text" value="{{project.name}}" id="name" />
 		{%if readonly %}
 			<span class="readonly">Read-only mode!!!</span>

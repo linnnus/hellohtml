@@ -18,11 +18,24 @@ header {
 	justify-content: space-between;
 }
 
-header input {
+.header-nav {
+	/* Add a bit of space between items in the left side of header */
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	gap: 10px;
+}
+
+.header-nav input {
 	border: none;
 	padding: 0.5em;
 	border-radius: 5px;
 	width: 40ch;
+}
+
+.header-nav__back {
+	text-decoration: none;
+	color: white;
 }
 
 .readonly {
