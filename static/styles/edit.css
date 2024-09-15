@@ -52,7 +52,7 @@ header {
 #input {
 	grid-column: 1 / 2;
 	width: 50vw;
-	background: whitesmoke; /* NOCOMMIT */
+	background-color: #ffffff66;
 }
 
 #output {
