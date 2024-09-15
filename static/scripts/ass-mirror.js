@@ -93,8 +93,8 @@ class AssMirror extends HTMLElement {
 		shadow.appendChild(container);
 
 		this.edit = document.createElement("textArea");
-		this.edit.autocorrect = "off";
-		this.edit.spellCheck = false;
+		this.edit.setAttribute("autocorrec", "off");
+		this.edit.setAttribute("spellcheck", "false");
 		this.edit.classList.add("edit");
 		this.edit.addEventListener("keydown", this.#doSmartEditing.bind(this));
 		this.edit.addEventListener("input",   this.#updateHighlight.bind(this));
