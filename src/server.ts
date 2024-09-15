@@ -58,10 +58,6 @@ app.use("*", async (c, next) => {
 
 app.use(logger());
 
-app.use("/", c => {
-	return c.render("index");
-});
-
 // Users are identified by a userId which acts sort of like an API token. That
 // is, a combined identifier and permission. The security/ease-of-use tradeoff
 // is essentially the same as to those of projects being editable if you know
@@ -82,6 +78,10 @@ app.use("*", async (c, next) => {
 	c.set("userId", userId);
 
 	await next();
+});
+
+app.use("/", c => {
+	return c.render("index");
 });
 
 app.post("/project/new", async c => {
