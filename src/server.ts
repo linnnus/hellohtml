@@ -77,7 +77,7 @@ app.use("*", async (c, next) => {
 	// re-enfource cookie so it doesn't expire.
 	setCookie(c, COOKIE_NAME, userId, {
 		secure: true,
-		sameSite: "Strict",
+		sameSite: "Lax", // We need the cookie to be sent on cross-site navigations.
 		expires: new Date(Date.now() + 1000*60*60*24*365*10),
 	});
 
