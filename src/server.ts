@@ -70,12 +70,16 @@ app.use("*", async (c, next) => {
 	let userId = getCookie(c, COOKIE_NAME);
 	if (userId === undefined) {
 		userId = crypto.randomUUID();
-		setCookie(c, COOKIE_NAME, userId, {
-			secure: true,
-			sameSite: "Strict",
-		});
 	}
 	c.set("userId", userId);
+
+	// We set this cookie regardless of whether we found a user id to
+	// re-enfource cookie so it doesn't expire.
+	setCookie(c, COOKIE_NAME, userId, {
+		secure: true,
+		sameSite: "Strict",
+		expires: new Date(Date.now() + 1000*60*60*24*365*10),
+	});
 
 	await next();
 });
